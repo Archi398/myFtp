@@ -14,10 +14,9 @@ export function launch(port) {
       console.log(command, args);
 
       switch(command) {
-        
         case "USER":     
           if (args[0] == undefined) {
-            socket.write('Error Please enter an username and a password.\r\n');
+            socket.write('ERROR Please enter an username and a password.\r\n');
             break;
           }else{
             socket.name = args[0];
@@ -35,7 +34,7 @@ export function launch(port) {
           }
         case "PASS":
           if (args[0] == undefined || args[0] != socket.pass) {
-            socket.write('Error Please enter a valid password.\r\n');
+            socket.write('ERROR Please enter a valid password.\r\n');
           }else if (args[0] == socket.pass){
             socket.write('331 Password valid.\r\n');
           }
@@ -55,6 +54,42 @@ export function launch(port) {
         case "PWD":
           socket.write(`257, ${process.cwd()} \r\n`);
           break;
+        case "HELP":
+          socket.write(`214, \nType HELP to list all function name. \nType HELP name with name is a function name.\r\n`);
+          if (args[0] == undefined) {
+            socket.write(`USER [arg1] \nPASS [arg1] \nLIST \nPWD \nCWD [arg1] \nRETR [arg1] \nSTOR [arg1] \nQUIT \r\n`);
+          }else{
+            switch (args[0]) {
+              case "USER":
+                socket.write(`USER [arg1] : Connect with a username. \r\n`);
+                break;
+              case "PASS":
+                socket.write(`PASS [arg1] : Authenticate the user with a password. \r\n`);
+                break;
+              case "LIST":
+                socket.write(`LIST : List the current directory of the server. \r\n`);
+                break;
+              case "PWD":
+                socket.write(`PWD : Display the name of the current directory of the server. \r\n`);
+                break;
+              case "CWD":
+                socket.write(`CWD [arg1] : Change the current directory of the server. \r\n`);
+                break;
+              case "RETR":
+                socket.write(`RETR [arg1] : Transfer a copy of the file FILE from the server to the client. \r\n`);
+                break;
+              case "STOR":
+                socket.write(`STOR [arg1] : Transfer a copy of the file FILE from the client to the server. \r\n`);
+                break;
+              case "QUIT":
+                socket.write(`QUIT : Close the connection and stop the program. \r\n`);
+                break;
+              default:
+                socket.write(`Function name : '${args[0]}' not found. \r\n`);
+                break;
+            }
+          }
+          break;
         case "CWD":
           if (args[0] == undefined) {
             process.chdir(directory);
@@ -64,7 +99,7 @@ export function launch(port) {
               process.chdir(args[0]);
               socket.write(`250 New path : ${process.cwd()} \r\n`);
             } catch(err) {
-              socket.write(`Error Try another path.\r\n`);
+              socket.write(`ERROR Try another path.\r\n`);
             }
           }
           break;
