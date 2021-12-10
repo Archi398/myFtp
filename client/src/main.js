@@ -1,4 +1,3 @@
-import { Socket } from "dgram";
 import { createConnection } from "net";
 import { createInterface } from "readline";
 
@@ -12,7 +11,7 @@ const rl = createInterface({
 
 const client = createConnection({ port: 4242 }, () => {
   console.log("client connected.");
-  console.log("Please connect with command USER.");
+  console.log("You need to connect with command USER.");
   
   rl.question('Command : ', function (cmd) {
     client.write(cmd)
@@ -21,9 +20,6 @@ const client = createConnection({ port: 4242 }, () => {
   client.on("data", (data) => {
     const message = data.toString();
     console.log("Message received:", message);
-    rl.question('Command : ', function (cmd) {
-      client.write(cmd)
-    }) 
 
     const [status, ...args] = message.trim().split(" ");
     if (status == 230 && currentCommand === "USER") {
@@ -32,6 +28,7 @@ const client = createConnection({ port: 4242 }, () => {
 
     if(status == 221){
       console.log("Client close");
+      isAuthenticated = false;
     }else {
       rl.question('Command : ', function (cmd) {
         client.write(cmd)

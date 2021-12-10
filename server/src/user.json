@@ -1,6 +1,10 @@
 [
     {
         "name": "archi",
-        "pass": "archi"
+        "pass": "mdparchi"
+    },
+    {
+        "name": "admin",
+        "pass": "admin"
     }
 ]
