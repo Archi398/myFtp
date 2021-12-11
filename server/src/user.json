@@ -1,10 +1,1 @@
-[
-    {
-        "name": "archi",
-        "pass": "mdparchi"
-    },
-    {
-        "name": "admin",
-        "pass": "admin"
-    }
-]
+[{"name":"archi","pass":"mdparchi"},{"name":"admin","pass":"admin"},{"name":"sat","pass":"satmdp"}]

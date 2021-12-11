@@ -11,7 +11,7 @@ const rl = createInterface({
 
 const client = createConnection({ port: 4242 }, () => {
   console.log("client connected.");
-  console.log("You need to connect with command USER.");
+  console.log("You need to connect with command USER [username] OR CREATEUSER [username] [password].");
   
   rl.question('Command : ', function (cmd) {
     client.write(cmd)
