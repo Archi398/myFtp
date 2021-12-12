@@ -22,7 +22,6 @@ export function launch(port) {
               socket.write('ERROR Please enter an username.\r\n');
             }else{
               socket.name = args[0];
-              let result = "";
               let flag = false;
               users.forEach(user => {
                 if (user.name === socket.name){
@@ -32,12 +31,11 @@ export function launch(port) {
               });
               if (flag){
                 flag = true;
-                result = `230 User ${socket.name} logged in, proceed by entering the password of ${socket.name} with command PASS.\r\n`;
+                socket.write(`230 User ${socket.name} logged in, proceed by entering the password of ${socket.name} with command PASS.\r\n`);
                 isconnect++;
               }else{
-                result = '230 User not exist.\r\n';
+                socket.write('230 User not exist.\r\n');
               }
-              socket.write(result);
             }
             break;
           case "CREATEUSER":
@@ -88,52 +86,56 @@ export function launch(port) {
       }else if (isconnect == 2){
         switch(command) {
           case "LIST":
-            socket.write(`\r\n`);
+            let resultLIST = "";
+            resultLIST += (`\r\n`);
             fs.readdirSync(process.cwd()).forEach(file => {
-              socket.write(`${file} \r\n`);
+              resultLIST += (`${file} \r\n`);
             });
+            socket.write(resultLIST);
             break;
           case "PWD":
             socket.write(`257, ${process.cwd()} \r\n`);
             break;
           case "HELP":
-            socket.write(`214, \nType HELP to list all functions name. \nType HELP [name] with name is a function name.\r\n`);
+            let resultHELP = "";
+            resultHELP += `214, \nType HELP to list all functions name. \nType HELP [name] with name is a function name.\r\n\r\n`;
             if (args[0] == undefined) {
-              socket.write(`USER \nPASS \nCREATEUSER \nLIST \nPWD \nCWD \nRETR \nSTOR \nQUIT \r\n`);
+              resultHELP += (`USER \nPASS \nCREATEUSER \nLIST \nPWD \nCWD \nRETR \nSTOR \nQUIT \r\n`);
             }else{
               switch (args[0]) {
                 case "USER":
-                  socket.write(`USER [username] : Connect with a username. \r\n`);
+                  resultHELP += (`USER [username] : Connect with a username. \r\n`);
                   break;
                 case "PASS":
-                  socket.write(`PASS [password] : Authenticate the user with a password. \r\n`);
+                  resultHELP += (`PASS [password] : Authenticate the user with a password. \r\n`);
                   break;
                 case "CREATEUSER":
-                  socket.write(`CREATEUSER [username] [password] : Create a new User. \r\n`);
+                  resultHELP += (`CREATEUSER [username] [password] : Create a new User. \r\n`);
                   break;
                 case "LIST":
-                  socket.write(`LIST : List the current directory of the server. \r\n`);
+                  resultHELP += (`LIST : List the current directory of the server. \r\n`);
                   break;
                 case "PWD":
-                  socket.write(`PWD : Display the name of the current directory of the server. \r\n`);
+                  resultHELP += (`PWD : Display the name of the current directory of the server. \r\n`);
                   break;
                 case "CWD":
-                  socket.write(`CWD [directory] : Change the current directory of the server. \r\n`);
+                  resultHELP += (`CWD [directory] : Change the current directory of the server. \r\n`);
                   break;
                 case "RETR":
-                  socket.write(`RETR [filename] : Transfer a copy of the file FILE from the server to the client. \r\n`);
+                  resultHELP += (`RETR [filename] : Transfer a copy of the file FILE from the server to the client. \r\n`);
                   break;
                 case "STOR":
-                  socket.write(`STOR [filename] : Transfer a copy of the file FILE from the client to the server. \r\n`);
+                  resultHELP += (`STOR [filename] : Transfer a copy of the file FILE from the client to the server. \r\n`);
                   break;
                 case "QUIT":
-                  socket.write(`QUIT : Close the connection and stop the program. \r\n`);
+                  resultHELP += (`QUIT : Close the connection and stop the program. \r\n`);
                   break;
                 default:
-                  socket.write(`Function name : '${args[0]}' not found. \r\n`);
+                  resultHELP += (`Function name : '${args[0]}' not found. \r\n`);
                   break;
               }
             }
+            socket.write(resultHELP);
             break;
           case "CWD":
             if (args[0] == undefined) {
