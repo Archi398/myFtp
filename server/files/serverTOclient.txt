@@ -1,0 +1,5 @@
+salut je 
+suis
+un ficher texte de teste pour la commande
+
+RETR

@@ -1,4 +1,5 @@
 import { createServer } from "net";
+import { copyFile } from 'fs/promises';
 
 const fs = require('fs');
 const users = JSON.parse(fs.readFileSync('./src/user.json'));
@@ -119,13 +120,13 @@ export function launch(port) {
                   resultHELP += (`PWD : Display the name of the current directory of the server. \r\n`);
                   break;
                 case "CWD":
-                  resultHELP += (`CWD [directory] : Change the current directory of the server, if directory not specify you will return in the default directory. \r\n`);
+                  resultHELP += (`CWD [directory] : Change the current directory of the server, if [directory] not specify you will return in the default directory. \r\n`);
                   break;
                 case "RETR":
-                  resultHELP += (`RETR [filename] : Transfer a copy of the file FILE from the server to the client. \r\n`);
+                  resultHELP += (`RETR [filename] : Transfer a copy of the file the server "/files" directory to your current directory. \r\n`);
                   break;
                 case "STOR":
-                  resultHELP += (`STOR [filename] : Transfer a copy of the file FILE from the client to the server. \r\n`);
+                  resultHELP += (`STOR [filename] : Transfer a copy of the file in your current directory to the server "/files" directory. \r\n`);
                   break;
                 case "QUIT":
                   resultHELP += (`QUIT : Close the connection and stop the program. \r\n`);
@@ -150,11 +151,38 @@ export function launch(port) {
               }
             }
             break;
+          case "TEST":
+            socket.write(`${directory} \r\n`);
+            break;
           case "RETR":
-            socket.write("200 \r\n");
+            if (args[0] == undefined) {
+              socket.write(`ERROR Please specify the filename. \r\n`);
+            }else {
+              (async () => {
+                try {
+                  await copyFile(`${directory}\\files\\${args[0]}`, `${process.cwd()}\\${args[0]}`);
+                  socket.write(`552 ${directory}\\files\\${args[0]} was copied to ${process.cwd()}\\${args[0]}. \r\n`);
+                } catch (err) {
+                  console.log(err);
+                  socket.write(`ERROR The file could not be copied. \r\n`);
+                }
+              })();
+            }
             break;
           case "STOR":
-            socket.write("200 \r\n");
+            if (args[0] == undefined) {
+              socket.write(`ERROR Please specify the filename. \r\n`);
+            }else {
+              (async () => {
+                try {
+                  await copyFile(`${process.cwd()}\\${args[0]}`, `${directory}\\files\\${args[0]}`);
+                  socket.write(`552 ${process.cwd()}\\${args[0]} was copied to ${directory}\\files\\${args[0]}. \r\n`);
+                } catch (err) {
+                  console.log(err);
+                  socket.write(`ERROR The file could not be copied. \r\n`);
+                }
+              })();
+            }
             break;
           case "QUIT":
             socket.write(`221 \r\n`);
