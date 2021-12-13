@@ -30,6 +30,11 @@ Command : CWD ../client/files
 CWD ../client/files
 Message received: 250 New path : C:\Users\archi\Desktop\node_EFREI\myFtp\client\files
 
+Command : LIST
+LIST
+Message received:
+clientTOserver.txt
+
 Command : STOR clientTOserver.txt --First file to save in the server
 STOR clientTOserver.txt
 Message received: 552 C:\Users\archi\Desktop\node_EFREI\myFtp\client\files\clientTOserver.txt was copied to C:\Users\archi\Desktop\node_EFREI\myFtp\server\files\clientTOserver.txt.
@@ -37,6 +42,12 @@ Message received: 552 C:\Users\archi\Desktop\node_EFREI\myFtp\client\files\clien
 Command : RETR serverTOclient.txt --Another file to save in the client
 RETR serverTOclient.txt
 Message received: 552 C:\Users\archi\Desktop\node_EFREI\myFtp\server\files\serverTOclient.txt was copied to C:\Users\archi\Desktop\node_EFREI\myFtp\client\files\serverTOclient.txt.
+
+Command : LIST
+LIST
+Message received:
+clientTOserver.txt
+serverTOclient.txt
 
 ```
 
