@@ -119,7 +119,7 @@ export function launch(port) {
                   resultHELP += (`PWD : Display the name of the current directory of the server. \r\n`);
                   break;
                 case "CWD":
-                  resultHELP += (`CWD [directory] : Change the current directory of the server. \r\n`);
+                  resultHELP += (`CWD [directory] : Change the current directory of the server, if directory not specify you will return in the default directory. \r\n`);
                   break;
                 case "RETR":
                   resultHELP += (`RETR [filename] : Transfer a copy of the file FILE from the server to the client. \r\n`);
