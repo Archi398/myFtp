@@ -16,9 +16,10 @@ When you will start the project you have 2 option
 
 When this is done you can use the command `HELP` to see every other command possible 
 
+
 For the commands `STOR` and `RETR` you can use files that already exist for tests
 
-example once you connect : 
+Example once you connect : 
 
 ```
 Command : PWD
@@ -29,6 +30,11 @@ Command : CWD ../client/files
 CWD ../client/files
 Message received: 250 New path : C:\Users\archi\Desktop\node_EFREI\myFtp\client\files
 
+Command : LIST
+LIST
+Message received:
+clientTOserver.txt
+
 Command : STOR clientTOserver.txt --First file to save in the server
 STOR clientTOserver.txt
 Message received: 552 C:\Users\archi\Desktop\node_EFREI\myFtp\client\files\clientTOserver.txt was copied to C:\Users\archi\Desktop\node_EFREI\myFtp\server\files\clientTOserver.txt.
@@ -37,9 +43,13 @@ Command : RETR serverTOclient.txt --Another file to save in the client
 RETR serverTOclient.txt
 Message received: 552 C:\Users\archi\Desktop\node_EFREI\myFtp\server\files\serverTOclient.txt was copied to C:\Users\archi\Desktop\node_EFREI\myFtp\client\files\serverTOclient.txt.
 
+Command : LIST
+LIST
+Message received:
+clientTOserver.txt
+serverTOclient.txt
+
 ```
-
-
 
 #
 
