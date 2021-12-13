@@ -147,12 +147,10 @@ export function launch(port) {
                 process.chdir(args[0]);
                 socket.write(`250 New path : ${process.cwd()} \r\n`);
               } catch(err) {
+                console.log(err);
                 socket.write(`ERROR Try another path.\r\n`);
               }
             }
-            break;
-          case "TEST":
-            socket.write(`${directory} \r\n`);
             break;
           case "RETR":
             if (args[0] == undefined) {
